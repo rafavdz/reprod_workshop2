@@ -25,25 +25,40 @@ process_access <- function(access_data, datazone_scotland) {
 
 # Create accessibility map
 plot_employment_access <- function(accessibility_sf){
-  dir.create("./data/generated", recursive = TRUE, showWarnings = FALSE)
+  # Output directory
+  dir.create(
+    "./data/generated",
+    recursive = TRUE,
+    showWarnings = FALSE
+  )
   
-  # Run map
-  map_ggplot <- accessibility_sf |> 
-    filter(time_of_day == 'am') |>
-    ggplot() +
-    geom_sf(aes(fill = access_employment_all_45/1e3), lwd = 0) +
-    labs(
-      title = 'Accessibility to employment',
-      subtitle = 'Travel time by public transport at morning',
-      fill = 'Jobs \n(In thousands)'
+  # Output filename
+  output_file <- "./data/generated/accessibility_map.png"
+  
+  # Create map
+  map_ggplot <- accessibility_sf |>
+    dplyr::filter(time_of_day == "am") |>
+    ggplot2::ggplot() +
+    ggplot2::geom_sf(
+      ggplot2::aes(fill = access_employment_all_45 / 1e3),
+      linewidth = 0
     ) +
-    scale_fill_viridis_b(n.breaks = 6) +
-    theme_void()
+    ggplot2::labs(
+      title = "Accessibility to employment",
+      subtitle = "Travel time by public transport at morning",
+      fill = "Jobs \n(In thousands)"
+    ) +
+    ggplot2::scale_fill_viridis_b(n.breaks = 6) +
+    ggplot2::theme_void()
   
   # Save map
   ggplot2::ggsave(
     plot = map_ggplot,
-    filename = "./data/generated/accessibility_map.png"
+    filename = output_file
   )
+  
+  # Return filename so targets can track the file
+  output_file
+  
 }
 
