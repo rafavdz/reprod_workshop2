@@ -21,7 +21,7 @@ download_datazone <- function() {
   dir <- "./data/raw/datazones_scotland"
   
   download.file(
-    "https://maps.gov.scot/ATOM/shapefiles/SG_DataZoneBdry_2011.zip",
+    "https://huggingface.co/datasets/rafavdz/datazones_scotland2011/resolve/main/datazones_scotland.zip",
     zip,
     mode = "wb"
   )
@@ -31,7 +31,7 @@ download_datazone <- function() {
   files <- unzip(zip, list = TRUE)$Name
   unzip(zip, exdir = dir)
   file.remove(zip)
-  
+
   file.path(
     dir,
     files[grepl("\\.shp$", files, ignore.case = TRUE)]
@@ -39,4 +39,31 @@ download_datazone <- function() {
 }
 
 
+# Download data zone geometries in Scotland
+download_datazone <- function() {
+  dir.create("./data/raw", recursive = TRUE, showWarnings = FALSE)
+  
+  zip <- "./data/raw/SG_DataZoneBdry_2011.zip"
+  dir <- "./data/raw/datazones_scotland"
+  
+  download.file(
+    "https://huggingface.co/datasets/rafavdz/datazones_scotland2011/resolve/main/datazones_scotland.zip",
+    zip,
+    mode = "wb"
+  )
+  
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+  
+  unzip(zip, exdir = dir)
+  file.remove(zip)
+  
+  shp_path <- list.files(
+    dir,
+    pattern = "\\.shp$",
+    recursive = TRUE,
+    full.names = TRUE
+  )
+  
+  return(shp_path)
+}
 
