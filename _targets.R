@@ -46,6 +46,7 @@ list(
     command = plot_employment_access(
       accessibility_sf = subset_glasgow
     ),
-    packages = c("dplyr", "ggplot2", "sf")
+    packages = c("dplyr", "ggplot2", "sf"),
+    format = "file"
   )
 )
